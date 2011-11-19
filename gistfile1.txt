@@ -1,0 +1,67 @@
+From 2129f60889393ba501d3c615bb54a15c597184db Mon Sep 17 00:00:00 2001
+From: nyash <nyashh@gmail.com>
+Date: Sun, 7 Aug 2011 01:31:52 +0200
+Subject: [PATCH] rails 3.1 support
+
+---
+ lib/generators/assets/assets_generator.rb          |    9 +++++++++
+ lib/generators/nested_scaffold_generator.rb        |    4 ++--
+ .../stylesheets/stylesheets_generator.rb           |    9 ---------
+ 3 files changed, 11 insertions(+), 11 deletions(-)
+ create mode 100644 lib/generators/assets/assets_generator.rb
+ delete mode 100644 lib/generators/stylesheets/stylesheets_generator.rb
+
+diff --git a/lib/generators/assets/assets_generator.rb b/lib/generators/assets/assets_generator.rb
+new file mode 100644
+index 0000000..208836d
+--- /dev/null
++++ b/lib/generators/assets/assets_generator.rb
+@@ -0,0 +1,9 @@
++require 'rails/generators/rails/assets/assets_generator'
++
++module NestedScaffold
++  module Generators
++    class AssetsGenerator < ::Rails::Generators::AssetsGenerator
++      source_root superclass.source_root
++    end
++  end
++end
+diff --git a/lib/generators/nested_scaffold_generator.rb b/lib/generators/nested_scaffold_generator.rb
+index b3ac369..d3fa224 100644
+--- a/lib/generators/nested_scaffold_generator.rb
++++ b/lib/generators/nested_scaffold_generator.rb
+@@ -2,7 +2,7 @@ require 'rails/generators/rails/scaffold/scaffold_generator'
+ require File.join(File.dirname(__FILE__), 'base')
+ require File.join(File.dirname(__FILE__), 'scaffold_controller/scaffold_controller_generator')
+ require File.join(File.dirname(__FILE__), 'active_record/active_record_generator')
+-require File.join(File.dirname(__FILE__), 'stylesheets/stylesheets_generator')
++require File.join(File.dirname(__FILE__), 'assets/assets_generator')
+ 
+ module NestedScaffold
+   module Generators
+@@ -12,7 +12,7 @@ module NestedScaffold
+       # override ScaffoldGenerator
+       hook_for :scaffold_controller, :required => true
+       # override ScaffoldGenerator
+-      hook_for :stylesheets
++      hook_for :assets
+       # override ModelGenerator
+       hook_for :orm, :required => true
+ 
+diff --git a/lib/generators/stylesheets/stylesheets_generator.rb b/lib/generators/stylesheets/stylesheets_generator.rb
+deleted file mode 100644
+index 6c769c5..0000000
+--- a/lib/generators/stylesheets/stylesheets_generator.rb
++++ /dev/null
+@@ -1,9 +0,0 @@
+-require 'rails/generators/rails/stylesheets/stylesheets_generator'
+-
+-module NestedScaffold
+-  module Generators
+-    class StylesheetsGenerator < ::Rails::Generators::StylesheetsGenerator
+-      source_root superclass.source_root
+-    end
+-  end
+-end
+-- 
+1.7.1
